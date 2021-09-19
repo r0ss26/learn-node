@@ -34,11 +34,33 @@
 // emitter.on('messageLogged', (arg) => console.log('message logged', arg));
 
 // emitter.emit('messageLogged', {id: 1, url: 'http://'});
-const Logger = require('./logger');
-const logger = new Logger();
+// const Logger = require('./logger');
+// const logger = new Logger();
 
-logger.on('logging', arg => {
-    console.log('Listener called', arg);
+// logger.on('logging', arg => {
+//     console.log('Listener called', arg);
+// });
+
+// logger.log('message');
+
+// http
+const http = require('http');
+
+const server = http.createServer((req, res) => {
+    if (req.url === '/') {
+        res.write('Hello world');
+        res.end();
+    }
+
+    if (req.url === '/api/course') {
+        res.write(JSON.stringify([1, 2, 3]));
+        res.end();
+    }
 });
 
-logger.log('message');
+server.on('connection', socket => {
+    console.log('new connection');
+})
+
+server.listen(3000);
+console.log('listening on port 3000...');
